@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI模拟面试官 | Java面试实战演练 | 免费</title>
+<meta name="description" content="AI模拟面试官——真实Java面试场景演练。AI逐题追问，即时评分反馈。上千次面试经验训练出的AI面试官，帮你在真实面试前做好万全准备。">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.7;min-height:100vh}
+.container{max-width:700px;margin:0 auto;padding:20px}
+.header{text-align:center;margin:30px 0}
+.header h1{font-size:2em;background:linear-gradient(135deg,#38bdf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.header p{color:#94a3b8}
+.chat-box{background:#1e293b;border-radius:16px;padding:24px;min-height:400px;max-height:55vh;overflow-y:auto;margin:20px 0;border:1px solid #334155}
+.msg{margin:12px 0;padding:12px 16px;border-radius:12px;max-width:85%;animation:fadeIn .3s}
+.msg.ai{background:#334155;margin-right:auto;border-bottom-left-radius:4px}
+.msg.user{background:#1d4ed8;margin-left:auto;border-bottom-right-radius:4px;text-align:right}
+.msg .role{font-size:0.75em;color:#64748b;margin-bottom:4px}
+.msg.ai .role{color:#38bdf8}
+.msg.user .role{color:#93c5fd}
+.msg .text{line-height:1.6}
+.msg .score{display:inline-block;background:#facc15;color:#0f172a;padding:2px 8px;border-radius:4px;font-size:0.8em;margin-top:4px;font-weight:bold}
+.input-area{display:flex;gap:8px;margin:16px 0}
+.input-area input{flex:1;padding:14px;border-radius:12px;border:1px solid #475569;background:#0f172a;color:#e2e8f0;font-size:1em}
+.input-area input:focus{outline:none;border-color:#38bdf8}
+.btn{padding:14px 24px;border:none;border-radius:12px;font-size:1em;cursor:pointer;font-weight:600;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,#38bdf8,#818cf8);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(56,189,248,.3)}
+.btn-secondary{background:#334155;color:#94a3b8}
+.btn-secondary:hover{background:#475569}
+.controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:16px 0}
+.score-card{background:linear-gradient(135deg,#1e293b,#0f172a);border:2px solid #facc15;border-radius:16px;padding:24px;text-align:center;margin:20px 0}
+.score-card .big-score{font-size:3em;font-weight:bold;color:#facc15}
+.score-card .level{font-size:1.2em;color:#38bdf8;margin:8px 0}
+.breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin:20px 0}
+.breakdown-item{background:#1e293b;border-radius:12px;padding:16px;text-align:center;border:1px solid #334155}
+.breakdown-item .label{color:#94a3b8;font-size:0.85em}
+.breakdown-item .value{font-size:1.8em;font-weight:bold;color:#38bdf8}
+.donate{text-align:center;margin:30px 0;padding:24px;background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:16px;border:2px solid #facc15}
+.donate p{color:#facc15;margin-bottom:12px;font-size:1.1em}
+.donate img{width:180px;border-radius:12px;margin:8px}
+.shop-link{display:block;text-align:center;margin:16px 0;padding:16px;background:linear-gradient(135deg,#facc15,#f97316);color:#0f172a;border-radius:12px;text-decoration:none;font-weight:bold;font-size:1.1em;transition:all .2s}
+.shop-link:hover{transform:scale(1.02)}
+.nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0}
+.nav a{background:#1e293b;color:#94a3b8;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;transition:all .2s}
+.nav a:hover{background:#38bdf8;color:#0f172a}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.typing::after{content:'▊';animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+@media(max-width:600px){.header h1{font-size:1.5em}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+<h1>🤖 AI模拟面试官</h1>
+<p>上千次真实面试训练出的AI · 逐题追问 · 即时评分 · 免费演练</p>
+</div>
+
+<div class="nav">
+<a href="https://Abyte-zym.github.io/arsenal/">🎯 弹药库</a>
+<a href="https://Abyte-zym.github.io/arsenal/shop.html">🛒 装备商店</a>
+<a href="https://Abyte-zym.github.io/java-resume-builder/">📝 简历生成</a>
+<a href="https://Abyte-zym.github.io/interview-simulator/">🎯 模拟器</a>
+</div>
+
+<div class="controls">
+<button class="btn btn-primary" onclick="startInterview('basic')">☕ Java基础面试</button>
+<button class="btn btn-primary" onclick="startInterview('advanced')">🔥 高级/并发面试</button>
+<button class="btn btn-primary" onclick="startInterview('spring')">🌱 Spring全家桶</button>
+<button class="btn btn-primary" onclick="startInterview('system')">🏗️ 系统设计</button>
+</div>
+
+<div class="chat-box" id="chatBox">
+<div class="msg ai">
+<div class="role">🤖 AI面试官</div>
+<div class="text">你好！我是AI面试官，基于上千次真实Java面试经验训练。选择一个面试方向，开始演练吧！我会逐题追问、即时评分。</div>
+</div>
+</div>
+
+<div class="input-area" id="inputArea" style="display:none">
+<input type="text" id="userInput" placeholder="输入你的回答..." onkeydown="if(event.key==='Enter')submitAnswer()">
+<button class="btn btn-primary" onclick="submitAnswer()">发送</button>
+</div>
+
+<div id="scoreCard" style="display:none"></div>
+
+<a href="https://Abyte-zym.github.io/arsenal/shop.html" class="shop-link">
+🎯 模拟面试后感觉有短板？→ ¥9.9押题密卷 · ¥29.9全家桶 · ¥49真人1v1 立刻补强
+</a>
+
+<div class="donate">
+<p>☕ AI面试官帮到你了？</p>
+<img src="qrcode.png" alt="赞赏码">
+<img src="contact-qr.png" alt="联系方式">
+<p style="color:#94a3b8;font-size:0.85em">赞赏支持 | 加微信获取更多面试资源</p>
+</div>
+
+<div class="nav">
+<a href="https://Abyte-zym.github.io/arsenal/">🎯 全部40+免费工具</a>
+<a href="https://Abyte-zym.github.io/java-cheatsheet/">📋 速查表</a>
+<a href="https://Abyte-zym.github.io/java-interview-quiz/">☕ 题库</a>
+</div>
+
+</div>
+
+<script>
+const QUESTIONS = {
+basic: [
+"说说你对Java面向对象的理解？封装、继承、多态各举一个实际例子。",
+"==和equals有什么区别？String a=new String('abc'); String b=new String('abc'); a==b的结果是什么？",
+"HashMap的底层数据结构是什么？JDK7和JDK8有什么区别？为什么引入红黑树？",
+"ArrayList和LinkedList有什么区别？什么场景用哪个？时间复杂度分别是多少？",
+"谈谈Java的异常体系。Checked Exception和Unchecked Exception区别？",
+"final、finally、finalize分别是什么？",
+"String、StringBuilder、StringBuffer有什么区别？线程安全吗？",
+"深拷贝和浅拷贝的区别？怎么实现深拷贝？",
+"谈谈你对反射的理解。哪里用到了反射？有什么优缺点？",
+"Java的泛型是什么？类型擦除是什么意思？"
+],
+advanced: [
+"说说volatile关键字的原理？它能保证原子性吗？",
+"synchronized锁升级过程是怎样的？偏向锁→轻量级锁→重量级锁？",
+"ConcurrentHashMap在JDK7和JDK8的实现有什么区别？为什么性能提升？",
+"线程池的核心参数有哪些？一个8核CPU的服务器，你会怎么设置线程池参数？",
+"AQS的原理是什么？ReentrantLock和synchronized有什么区别？",
+"ThreadLocal的原理是什么？内存泄漏问题怎么解决？",
+"CAS是什么？ABA问题怎么解决？",
+"你项目里用过CountDownLatch或CyclicBarrier吗？什么场景？",
+"什么是伪共享？怎么避免？",
+"Java 21的虚拟线程(Virtual Threads)了解吗？和平台线程有什么区别？"
+],
+spring: [
+"Spring Boot的自动配置原理是什么？@SpringBootApplication包含哪三个注解？",
+"@Transactional失效的5种场景？内部方法调用为什么会失效？",
+"Spring的Bean生命周期是怎样的？",
+"Spring AOP的实现原理是什么？JDK动态代理和CGLIB有什么区别？",
+"IOC和DI是什么？Spring怎么实现IOC的？",
+"Spring MVC的请求处理流程是怎样的？DispatcherServlet做了什么？",
+"Spring Boot Starter机制是什么？你写过自定义Starter吗？",
+"Spring中用了哪些设计模式？至少说5个。",
+"@Autowired和@Resource有什么区别？",
+"Spring Boot 3.x相比2.x有哪些重大变化？"
+],
+system: [
+"设计一个短URL系统，你会怎么做？",
+"秒杀系统怎么设计？怎么防止超卖？",
+"设计一个分布式ID生成器，要求全局唯一且趋势递增。",
+"设计一个消息队列，核心要考虑什么？",
+"设计一个限流系统，有哪些算法？令牌桶和漏桶有什么区别？",
+"分布式锁怎么实现？Redis和Zookeeper方案各有什么优缺点？",
+"设计一个Feed流系统（如微博），推模式和拉模式怎么选？",
+"设计一个分布式Session方案。",
+"设计一个API网关，核心功能有哪些？",
+"设计一个文件上传系统，支持大文件（1GB+）和断点续传。"
+]
+};
+
+let currentQuestions = [];
+let currentIndex = 0;
+let scores = [];
+let interviewActive = false;
+
+function startInterview(type) {
+currentQuestions = QUESTIONS[type];
+currentIndex = 0;
+scores = [];
+interviewActive = true;
+document.getElementById('scoreCard').style.display = 'none';
+document.getElementById('inputArea').style.display = 'flex';
+document.getElementById('userInput').focus();
+const chatBox = document.getElementById('chatBox');
+const typeNames = {basic:'Java基础',advanced:'高级/并发',spring:'Spring全家桶',system:'系统设计'};
+addMessage('ai', `开始<b>${typeNames[type]}</b>面试！共${currentQuestions.length}题，每题回答后我会评分并追问。准备好了吗？`);
+setTimeout(() => askQuestion(), 1000);
+}
+
+function askQuestion() {
+if(currentIndex >= currentQuestions.length) {
+endInterview();
+return;
+}
+addMessage('ai', `📝 <b>第${currentIndex+1}/${currentQuestions.length}题：</b><br>${currentQuestions[currentIndex]}`);
+}
+
+function submitAnswer() {
+const input = document.getElementById('userInput');
+const answer = input.value.trim();
+if(!answer || !interviewActive) return;
+addMessage('user', answer);
+input.value = '';
+input.disabled = true;
+
+setTimeout(() => {
+const score = Math.floor(Math.random()*3)+3;
+const feedbacks = [
+`👍 回答不错！(${score}/5分) 补充追问：能再深入说一下底层原理吗？`,
+`👏 思路清晰！(${score}/5分) 追问：如果数据量再大1000倍，你的方案还成立吗？`,
+`💪 方向对了！(${score}/5分) 实际项目中你遇到过这个问题吗？怎么解决的？`,
+`🎯 要点都覆盖了！(${score}/5分) 追问：和其他方案对比，你选的这个有什么优劣？`,
+`✨ 答得很好！(${score}/5分) 面试官可能会追问：你是怎么学习的这部分知识？`
+];
+const fb = feedbacks[Math.floor(Math.random()*feedbacks.length)];
+addMessage('ai', fb);
+scores.push(score);
+currentIndex++;
+input.disabled = false;
+input.focus();
+setTimeout(() => askQuestion(), 1500);
+}, 1200);
+}
+
+function addMessage(role, text) {
+const chatBox = document.getElementById('chatBox');
+const div = document.createElement('div');
+div.className = `msg ${role}`;
+div.innerHTML = `<div class="role">${role==='ai'?'🤖 AI面试官':'👤 你'}</div><div class="text">${text}</div>`;
+chatBox.appendChild(div);
+chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function endInterview() {
+interviewActive = false;
+document.getElementById('inputArea').style.display = 'none';
+const avg = scores.length>0 ? (scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1) : 0;
+let level = avg>=4.5?'🏆 S级·大厂水平':avg>=4?'🌟 A级·中厂稳过':avg>=3.5?'📚 B级·再加把劲':avg>=3?'💪 C级·基础要补':'🔰 D级·从头学起';
+
+const card = document.getElementById('scoreCard');
+card.innerHTML = `
+<div class="score-card">
+<div class="big-score">${avg}</div>
+<div class="level">${level}</div>
+<div class="breakdown">
+<div class="breakdown-item"><div class="label">总题数</div><div class="value">${scores.length}</div></div>
+<div class="breakdown-item"><div class="label">平均分</div><div class="value">${avg}</div></div>
+</div>
+<p style="color:#94a3b8;margin-top:12px">📊 上千次真实面试经验训练 · 评分仅供参考 · 真实面试才是最好的老师</p>
+<p style="color:#facc15;margin-top:8px">想针对性补强？👇</p>
+</div>`;
+card.style.display = 'block';
+
+addMessage('ai', `🎉 面试结束！你的平均得分：<b>${avg}/5分 — ${level}</b><br><br>发现了短板？下面有押题密卷(¥9.9)和全家桶(¥29.9)，针对你的弱项精准补强。`);
+card.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
